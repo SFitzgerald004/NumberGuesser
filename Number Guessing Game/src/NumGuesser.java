@@ -20,6 +20,8 @@ public class NumGuesser
         	    	break;
 				case "3" :  setGameParameters(3);
         	    	break;  
+				case "4" :  WinRecords.printRecords();
+					break;
 				case "0" :  System.out.println("Thanks for playing!");
 							System.exit(0);
 				default : System.out.println("Please try again");
@@ -37,6 +39,7 @@ public class NumGuesser
 		System.out.println("1: Easy");
 		System.out.println("2: Medium");
 		System.out.println("3: Hard");
+		System.out.println("4: Print all win records");
 		System.out.println("0: Exit");
 		System.out.println("Enter your choice");
 		choice = keyboard.nextLine().trim();
@@ -73,20 +76,43 @@ public class NumGuesser
 	private static void gameStart(int guessNums, int guessRange)
 	{
 		// Number of guesses made by user
-		int guesses = 0;
-		int guess = 0;
+		int guesses = 0, guess = 0;
 		int i = 0;
 		int targetNum = guessRange;
+		double startTime = 0, endTime = 0;
+		double completionTime;
+		String difficulty = "";
+		WinRecords winRecord;
+		
+		// 10 for easy
+		// 5 for medium
+		// 3 for hard
+		if (guessNums == 10)
+		{
+			difficulty = "Easy";
+		} else if (guessNums == 5) {
+			difficulty = "Medium";
+		} else {
+			difficulty = "Hard";
+		}
+		
+		startTime = System.currentTimeMillis();
 		
 		while (guesses < guessNums && guess != targetNum)
 		{
+			
 			System.out.println(guessNums - i + " Guesses Remaining");
 			guess = keyboard.nextInt();
+			
 			guesses++;
 			
 			if (guess == targetNum)
 			{
 				System.out.println("You got it!");
+				endTime = System.currentTimeMillis();
+				System.out.println("\nYou completed the game in " + (completionTime = (endTime - startTime)/1000) + " seconds!");
+				winRecord = new WinRecords(targetNum, guesses, completionTime, difficulty);
+				winRecord.addRecord(winRecord);
 				gameRestart();
 				break;
 			} else {
